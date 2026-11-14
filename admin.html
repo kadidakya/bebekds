@@ -1,4 +1,4 @@
-<!-- لوحة إضافة منتج جديد للمتجر -->
+<!-- لوحة إضافة منتج جديد مع رفع الصور من الهاتف -->
 <div style="background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 25px auto; max-width: 550px; direction: rtl; font-family: 'Cairo', sans-serif;">
     <h3 style="color: #2f3542; margin-bottom: 15px; font-size: 1.25rem; border-bottom: 2px solid #ff6b6b; padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
         <span>➕</span> إضافة منتج جديد للمتجر
@@ -26,8 +26,8 @@
         </div>
 
         <div>
-            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">رابط صورة المنتج (URL):</label>
-            <input type="url" id="p-image" placeholder="ضع رابط الصورة المباشر هنا" required style="width: 100%; padding: 11px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; outline: none;">
+            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">اختر صورة المنتج من الهاتف:</label>
+            <input type="file" id="p-image-file" accept="image/*" required style="width: 100%; padding: 10px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; background: #f8f9fa; cursor: pointer;">
         </div>
 
         <button type="submit" style="background: #ff6b6b; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; margin-top: 5px; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);">نشر المنتج الآن</button>
@@ -41,20 +41,34 @@ document.getElementById('add-product-form').addEventListener('submit', function(
     const name = document.getElementById('p-name').value;
     const price = document.getElementById('p-price').value;
     const category = document.getElementById('p-category').value;
-    const image = document.getElementById('p-image').value;
+    const imageFile = document.getElementById('p-image-file').files[0];
 
-    const newProduct = { name, price, category, image };
+    if (!imageFile) {
+        alert('الرجاء اختيار صورة المنتج من الهاتف');
+        return;
+    }
 
-    // حفظ المنتج في الذاكرة المحلية للمتصفح
-    let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
-    products.push(newProduct);
-    localStorage.setItem('bebekds_products', JSON.stringify(products));
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const imageDataUrl = event.target.result;
 
-    alert('تم إضافة المنتج ونشره بنجاح في المتجر!');
-    document.getElementById('add-product-form').reset();
-    
-    // تحديث الصفحة لعرض المنتج الجديد مباشرة
-    location.reload();
+        const newProduct = { 
+            name: name, 
+            price: price, 
+            category: category, 
+            image: imageDataUrl 
+        };
+
+        // حفظ المنتج في الذاكرة المحلية للمتصفح
+        let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
+        products.push(newProduct);
+        localStorage.setItem('bebekds_products', JSON.stringify(products));
+
+        alert('تم إضافة المنتج ونشره بنجاح في المتجر!');
+        document.getElementById('add-product-form').reset();
+        location.reload();
+    };
+    reader.readAsDataURL(imageFile);
 });
 </script>
 
