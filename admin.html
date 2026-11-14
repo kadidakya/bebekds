@@ -1,0 +1,60 @@
+<!-- لوحة إضافة منتج جديد للمتجر -->
+<div style="background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 25px auto; max-width: 550px; direction: rtl; font-family: 'Cairo', sans-serif;">
+    <h3 style="color: #2f3542; margin-bottom: 15px; font-size: 1.25rem; border-bottom: 2px solid #ff6b6b; padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+        <span>➕</span> إضافة منتج جديد للمتجر
+    </h3>
+    
+    <form id="add-product-form" style="display: flex; flex-direction: column; gap: 14px;">
+        <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">اسم المنتج:</label>
+            <input type="text" id="p-name" placeholder="مثال: طقم صيفي قطني أنيق" required style="width: 100%; padding: 11px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; outline: none;">
+        </div>
+        
+        <div style="display: flex; gap: 12px;">
+            <div style="flex: 1;">
+                <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">السعر (د.ج):</label>
+                <input type="number" id="p-price" placeholder="2400" required style="width: 100%; padding: 11px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; outline: none;">
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">القسم:</label>
+                <select id="p-category" style="width: 100%; padding: 11px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; background: #fff; outline: none;">
+                    <option value="أولاد">أولاد</option>
+                    <option value="بنات">بنات</option>
+                    <option value="رضع">رضع</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label style="display: block; font-weight: 600; margin-bottom: 6px; color: #57606f; font-size: 0.95rem;">رابط صورة المنتج (URL):</label>
+            <input type="url" id="p-image" placeholder="ضع رابط الصورة المباشر هنا" required style="width: 100%; padding: 11px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; outline: none;">
+        </div>
+
+        <button type="submit" style="background: #ff6b6b; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; margin-top: 5px; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);">نشر المنتج الآن</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('add-product-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('p-name').value;
+    const price = document.getElementById('p-price').value;
+    const category = document.getElementById('p-category').value;
+    const image = document.getElementById('p-image').value;
+
+    const newProduct = { name, price, category, image };
+
+    // حفظ المنتج في الذاكرة المحلية للمتصفح
+    let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
+    products.push(newProduct);
+    localStorage.setItem('bebekds_products', JSON.stringify(products));
+
+    alert('تم إضافة المنتج ونشره بنجاح في المتجر!');
+    document.getElementById('add-product-form').reset();
+    
+    // تحديث الصفحة لعرض المنتج الجديد مباشرة
+    location.reload();
+});
+</script>
+
