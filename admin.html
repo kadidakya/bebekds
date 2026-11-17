@@ -1,5 +1,5 @@
-<!-- لوحة إضافة منتج جديد مع رفع الصور من الهاتف -->
-<div style="background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 25px auto; max-width: 550px; direction: rtl; font-family: 'Cairo', sans-serif;">
+<!-- لوحة إضافة وإدارة وحذف المنتجات -->
+<div style="background: #ffffff; padding: 22px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin: 25px auto; max-width: 600px; direction: rtl; font-family: 'Cairo', sans-serif;">
     <h3 style="color: #2f3542; margin-bottom: 15px; font-size: 1.25rem; border-bottom: 2px solid #ff6b6b; padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">
         <span>➕</span> إضافة منتج جديد للمتجر
     </h3>
@@ -32,9 +32,17 @@
 
         <button type="submit" style="background: #ff6b6b; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background 0.2s; margin-top: 5px; box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);">نشر المنتج الآن</button>
     </form>
+
+    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #dfe4ea;">
+
+    <h3 style="color: #2f3542; margin-bottom: 15px; font-size: 1.25rem;">📦 المنتجات المضافة حالياً (إدارة وحذف)</h3>
+    <div id="admin-products-list" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- سيتم عرض المنتجات هنا تلقائياً -->
+    </div>
 </div>
 
 <script>
+// إضافة منتج جديد
 document.getElementById('add-product-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -51,24 +59,59 @@ document.getElementById('add-product-form').addEventListener('submit', function(
     const reader = new FileReader();
     reader.onload = function(event) {
         const imageDataUrl = event.target.result;
+        const newProduct = { name, price, category, image: imageDataUrl };
 
-        const newProduct = { 
-            name: name, 
-            price: price, 
-            category: category, 
-            image: imageDataUrl 
-        };
-
-        // حفظ المنتج في الذاكرة المحلية للمتصفح
         let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
         products.push(newProduct);
         localStorage.setItem('bebekds_products', JSON.stringify(products));
 
-        alert('تم إضافة المنتج ونشره بنجاح في المتجر!');
+        alert('تم إضافة ونشر المنتج بنجاح!');
         document.getElementById('add-product-form').reset();
-        location.reload();
+        loadAdminProducts();
     };
     reader.readAsDataURL(imageFile);
 });
+
+// عرض المنتجات في لوحة التحكم مع زر الحذف
+function loadAdminProducts() {
+    const listContainer = document.getElementById('admin-products-list');
+    let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
+    
+    if (products.length === 0) {
+        listContainer.innerHTML = '<p style="color: #718093; text-align: center;">لا توجد منتجات مضافة حالياً.</p>';
+        return;
+    }
+
+    listContainer.innerHTML = '';
+    products.forEach((product, index) => {
+        const item = document.createElement('div');
+        item.style.cssText = "display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 10px 14px; border-radius: 8px; border: 1px solid #dfe4ea;";
+        
+        item.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="${product.image}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+                <div>
+                    <div style="font-weight: 600; font-size: 0.9rem; color: #2f3542;">${product.name}</div>
+                    <div style="font-size: 0.8rem; color: #718093;">${product.price} د.ج - ${product.category}</div>
+                </div>
+            </div>
+            <button onclick="deleteProduct(${index})" style="background: #ff4757; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600;">حذف</button>
+        `;
+        listContainer.appendChild(item);
+    });
+}
+
+// دالة حذف المنتج
+function deleteProduct(index) {
+    if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+        let products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
+        products.splice(index, 1);
+        localStorage.setItem('bebekds_products', JSON.stringify(products));
+        loadAdminProducts();
+    }
+}
+
+// تشغيل الدالة عند فتح الصفحة
+loadAdminProducts();
 </script>
 
