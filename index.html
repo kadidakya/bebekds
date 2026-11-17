@@ -3,213 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>متجر ملابس الأطفال | أناقة وراحة لصغاركم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>متجر ملابس الأطفال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff6b6b;
-            --primary-dark: #ee5253;
-            --secondary: #4ecdc4;
-            --accent: #ffe66d;
-            --dark: #2f3542;
-            --light: #f8f9fa;
-            --gray: #747d8c;
-            --white: #ffffff;
-            --shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            --radius: 14px;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--light); color: var(--dark); line-height: 1.6; }
-        header { background-color: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 8px; }
-        .logo span { color: var(--secondary); }
-        .cart-btn { background-color: var(--primary); color: var(--white); border: none; padding: 10px 18px; border-radius: 50px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
-        .cart-count { background-color: var(--accent); color: var(--dark); padding: 2px 8px; border-radius: 50%; font-size: 0.85rem; font-weight: 800; }
-        .hero { background: linear-gradient(135deg, #fff0f0 0%, #e0fbf9 100%); padding: 50px 5%; text-align: center; border-bottom: 1px solid #eee; }
-        .hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--dark); margin-bottom: 12px; }
-        .hero p { color: var(--gray); font-size: 1.1rem; max-width: 600px; margin: 0 auto 25px; }
-        .filters { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; padding: 25px 5% 10px; }
-        .filter-btn { background-color: var(--white); border: 2px solid #e1e4e8; color: var(--dark); padding: 8px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; }
-        .filter-btn.active, .filter-btn:hover { background-color: var(--secondary); border-color: var(--secondary); color: var(--white); }
-        .container { max-width: 1200px; margin: 0 auto; padding: 25px 5% 60px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
-        .product-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-        .product-img { width: 100%; height: 230px; object-fit: cover; background-color: #f1f2f6; }
-        .product-info { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
-        .product-category { font-size: 0.8rem; color: var(--secondary); font-weight: 700; margin-bottom: 4px; }
-        .product-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-        .product-price { font-size: 1.25rem; font-weight: 800; color: var(--primary); margin-bottom: 12px; }
-        .sizes-label { font-size: 0.85rem; color: var(--gray); margin-bottom: 6px; }
-        .sizes { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 15px; }
-        .size-btn { border: 1px solid #dfe4ea; background: var(--light); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; font-weight: 600; }
-        .size-btn.selected { background-color: var(--dark); color: var(--white); border-color: var(--dark); }
-        .add-to-cart { margin-top: auto; width: 100%; background-color: var(--secondary); color: var(--white); border: none; padding: 11px; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.95rem; }
-        .overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); display: none; z-index: 200; }
-        .overlay.open { display: block; }
-        .cart-sidebar { position: fixed; top: 0; left: -400px; width: 100%; max-width: 380px; height: 100vh; background: var(--white); z-index: 250; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 5px 0 25px rgba(0,0,0,0.15); }
-        .cart-sidebar.open { left: 0; }
-        .cart-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray); }
-        .cart-items { flex-grow: 1; overflow-y: auto; padding: 20px; }
-        .cart-item { display: flex; gap: 12px; padding-bottom: 15px; margin-bottom: 15px; border-bottom: 1px solid #f1f2f6; align-items: center; }
-        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .cart-item-details { flex-grow: 1; }
-        .cart-item-title { font-weight: 700; font-size: 0.95rem; }
-        .cart-item-meta { font-size: 0.8rem; color: var(--gray); }
-        .qty-controls { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
-        .qty-btn { width: 24px; height: 24px; border-radius: 50%; border: 1px solid #ddd; background: var(--light); cursor: pointer; font-weight: bold; }
-        .cart-footer { padding: 20px; border-top: 1px solid #eee; background: var(--light); }
-        .total-row { display: flex; justify-content: space-between; font-weight: 800; font-size: 1.15rem; margin-bottom: 15px; }
-        .checkout-btn { width: 100%; background: var(--primary); color: var(--white); border: none; padding: 13px; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; }
-        .checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
-        .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--white); width: 90%; max-width: 480px; border-radius: var(--radius); padding: 25px; z-index: 300; display: none; max-height: 90vh; overflow-y: auto; }
-        .modal.open { display: block; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-weight: 700; margin-bottom: 5px; font-size: 0.9rem; }
-        .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #dfe4ea; border-radius: 8px; font-size: 0.95rem; }
-        .order-summary-box { background: var(--light); padding: 12px; border-radius: 8px; margin: 15px 0; font-size: 0.9rem; }
-        .order-summary-box div { display: flex; justify-content: space-between; margin-bottom: 5px; }
-        .order-summary-box .final-total { font-weight: 800; color: var(--primary); font-size: 1.05rem; border-top: 1px solid #ddd; padding-top: 6px; margin-top: 6px; }
-        footer { background: var(--dark); color: var(--white); text-align: center; padding: 25px 5%; font-size: 0.9rem; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: var(--dark); color: var(--white); padding: 12px 20px; border-radius: 8px; font-size: 0.9rem; z-index: 400; display: none; box-shadow: var(--shadow); }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background: #f4f6f9; color: #333; direction: rtl; }
+        header { background: #fff; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.2rem; color: #ff6b6b; }
+        .cart-btn { background: #ff6b6b; color: white; padding: 8px 16px; border-radius: 50px; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; }
+        
+        .hero { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); padding: 30px 20px; text-align: center; color: #2f3542; }
+        .hero h1 { font-size: 1.8rem; margin-bottom: 10px; font-weight: 900; }
+        .hero p { font-size: 0.95rem; color: #57606f; max-width: 500px; margin: 0 auto; line-height: 1.6; }
+
+        .categories { display: flex; justify-content: center; gap: 10px; padding: 20px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.02); overflow-x: auto; }
+        .cat-btn { background: #f1f2f6; border: none; padding: 8px 20px; border-radius: 20px; font-weight: 600; color: #57606f; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+        .cat-btn.active { background: #48dbfb; color: white; }
+
+        .container { max-width: 600px; margin: 20px auto; padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
+        
+        .product-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.06); display: flex; flex-direction: column; }
+        .product-img { width: 100%; height: 280px; object-fit: cover; }
+        .product-info { padding: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .product-cat { color: #48dbfb; font-weight: 700; font-size: 0.85rem; }
+        .product-name { font-size: 1.2rem; font-weight: 700; color: #2f3542; }
+        .product-price { color: #ff4757; font-weight: 900; font-size: 1.25rem; }
+
+        footer { text-align: center; padding: 20px; color: #718093; font-size: 0.85rem; margin-top: 30px; border-top: 1px solid #dfe4ea; background: #fff; }
     </style>
 </head>
 <body>
+
     <header>
-        <div class="logo">👕 متجر <span>ملابس الأطفال</span></div>
-        <button class="cart-btn" onclick="toggleCart()">🛒 السلة <span class="cart-count" id="cart-count">0</span></button>
+        <div class="logo-area">
+            <span>👕</span> متجر ملابس الأطفال
+        </div>
+        <div class="cart-btn">
+            <span>🛒</span> السلة <span id="cart-count" style="background:#fff; color:#ff6b6b; padding:2px 6px; border-radius:50%; font-size:0.8rem;">0</span>
+        </div>
     </header>
+
     <section class="hero">
         <h1>أجمل تشكيلة لملابس الأطفال</h1>
-        <p>خامات قطنية ناعمة وتصاميم عصرية مريحة تناسب جميع الأعمار، مع توصيل سريع إلى 58 ولاية والدفع عند الاستلام.</p>
+        <p>خامات قطنية ناعمة وتصميمات عصرية مريحة تناسب جميع الأعمار، مع توصيل سريع إلى 58 ولاية والدفع عند الاستلاستلام.</p>
     </section>
-    <div class="filters">
-        <button class="filter-btn active" onclick="filterProducts('all', this)">الكل</button>
-        <button class="filter-btn" onclick="filterProducts('أولاد', this)">أولاد</button>
-        <button class="filter-btn" onclick="filterProducts('بنات', this)">بنات</button>
-        <button class="filter-btn" onclick="filterProducts('رضع', this)">رضع</button>
+
+    <div class="categories">
+        <button class="cat-btn active" onclick="filterCategory('الكل', this)">الكل</button>
+        <button class="cat-btn" onclick="filterCategory('أولاد', this)">أولاد</button>
+        <button class="cat-btn" onclick="filterCategory('بنات', this)">بنات</button>
+        <button class="cat-btn" onclick="filterCategory('رضع', this)">رضع</button>
     </div>
-    <main class="container"><div class="products-grid" id="products-grid"></div></main>
-    <div class="overlay" id="overlay" onclick="closeAll()"></div>
-    <aside class="cart-sidebar" id="cart-sidebar">
-        <div class="cart-header"><h3>سلة المشتريات</h3><button class="close-btn" onclick="toggleCart()">×</button></div>
-        <div class="cart-items" id="cart-items"><p style="text-align:center; color:#747d8c; margin-top:40px;">السلة فارغة حالياً</p></div>
-        <div class="cart-footer">
-            <div class="total-row"><span>المجموع الفرعي:</span><span id="cart-subtotal">0 د.ج</span></div>
-            <button class="checkout-btn" id="open-checkout-btn" onclick="openCheckout()" disabled>إتمام الطلب</button>
-        </div>
-    </aside>
-    <div class="modal" id="checkout-modal">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-            <h3>معلومات التوصيل (الدفع عند الاستلام)</h3>
-            <button class="close-btn" onclick="closeAll()">×</button>
-        </div>
-        <form id="order-form" onsubmit="submitOrder(event)">
-            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="cust-name" required placeholder="أدخل اسمك ولقبك"></div>
-            <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="cust-phone" required placeholder="05 / 06 / 07 ..."></div>
-            <div class="form-group"><label>الولاية</label><select id="cust-wilaya" required onchange="updateCheckoutSummary()"><option value="">-- اختر الولاية --</option></select></div>
-            <div class="form-group"><label>البلدية / العنوان</label><input type="text" id="cust-address" required placeholder="اسم البلدية والحي"></div>
-            <div class="order-summary-box">
-                <div><span>سعر المنتجات:</span> <span id="summary-subtotal">0 د.ج</span></div>
-                <div><span>تكلفة التوصيل:</span> <span id="summary-shipping">0 د.ج</span></div>
-                <div class="final-total"><span>المبلغ الإجمالي للدفع:</span> <span id="summary-total">0 د.ج</span></div>
-            </div>
-            <button type="submit" class="checkout-btn">تأكيد الطلب الآن</button>
-        </form>
+
+    <div class="container" id="products-container">
+        <!-- سيتم جلب وعرض المنتجات هنا تلقائياً -->
     </div>
-    <div class="toast" id="toast">تمت إضافة المنتج إلى السلة!</div>
-    <footer><p>© 2026 متجر ملابس الأطفال - جميع الحقوق محفوظة | التوصيل متوفر لجميع الولايات</p></footer>
+
+    <footer>
+        © 2026 متجر ملابس الأطفال - جميع الحقوق محفوظة
+    </footer>
+
     <script>
-        const products = [
-            { id: 1, name: "طقم قطني صيفي للأولاد", category: "أولاد", price: 2400, sizes: ["2 سنوات", "4 سنوات", "6 سنوات", "8 سنوات"], image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=500&q=80" },
-            { id: 2, name: "فستان بناتي مزهر أنيق", category: "بنات", price: 2900, sizes: ["3 سنوات", "5 سنوات", "7 سنوات", "9 سنوات"], image: "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=500&q=80" },
-            { id: 3, name: "سالوبيت قطن ناعم للرضع", category: "رضع", price: 1850, sizes: ["0-3 أشهر", "3-6 أشهر", "6-12 شهر", "12-18 شهر"], image: "https://images.unsplash.com/photo-1522771930-78848d9293e8?auto=format&fit=crop&w=500&q=80" },
-            { id: 4, name: "سترة جينز عصرية للأطفال", category: "أولاد", price: 3500, sizes: ["4 سنوات", "6 سنوات", "8 سنوات", "10 سنوات"], image: "https://images.unsplash.com/photo-1503919545889-aef636e10ad4?auto=format&fit=crop&w=500&q=80" },
-            { id: 5, name: "طقم تنورة وبلوزة للبنات", category: "بنات", price: 2700, sizes: ["2 سنوات", "4 سنوات", "6 سنوات"], image: "https://images.unsplash.com/photo-1621452773781-0f992fd195dc?auto=format&fit=crop&w=500&q=80" },
-            { id: 6, name: "طقم استقبال مولود جديد (3 قطع)", category: "رضع", price: 3200, sizes: ["0-3 أشهر", "3-6 أشهر"], image: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?auto=format&fit=crop&w=500&q=80" }
-        ];
-        const wilayas = ["01 - أدرار", "02 - الشلف", "03 - الأغواط", "04 - أم البواقي", "05 - باتنة", "06 - بجاية", "07 - بسكرة", "08 - بشار", "09 - البليدة", "10 - البويرة", "11 - تمنراست", "12 - تبسة", "13 - تلمسان", "14 - تيارت", "15 - تيزي وزو", "16 - الجزائر", "17 - الجلفة", "18 - جيجل", "19 - سطيف", "20 - سعيدة", "21 - سكيكدة", "22 - سيدي بلعباس", "23 - عنابة", "24 - قالمة", "25 - قسنطينة", "26 - المدية", "27 - مستغانم", "28 - المسيلة", "29 - معسكر", "30 - ورقلة", "31 - وهران", "32 - البيض", "33 - إليزي", "34 - برج بوعريريج", "35 - بومرداس", "36 - الطارف", "37 - تندوف", "38 - تيسمسيلت", "39 - الوادي", "40 - خنشلة", "41 - سوق أهراس", "42 - تيبازة", "43 - ميلة", "44 - عين الدفلى", "45 - النعامة", "46 - عين تموشنت", "47 - غرداية", "48 - غليزان", "49 - تيميمون", "50 - برج باجي مختار", "51 - أولاد جلال", "52 - بني عباس", "53 - عين صالح", "54 - عين قزام", "55 - تقرت", "56 - جانت", "57 - المغير", "58 - المنيعة"];
-        let selectedSizes = {}, cart = [];
-        function initWilayas() {
-            const select = document.getElementById('cust-wilaya');
-            wilayas.forEach(w => { const opt = document.createElement('option'); opt.value = w; opt.textContent = w; select.appendChild(opt); });
-        }
-        function renderProducts(category = 'all') {
-            const grid = document.getElementById('products-grid');
-            grid.innerHTML = '';
-            const filtered = category === 'all' ? products : products.filter(p => p.category === category);
-            filtered.forEach(product => {
-                if (!selectedSizes[product.id]) selectedSizes[product.id] = product.sizes[0];
+        let currentCategory = 'الكل';
+
+        function loadProducts(category = 'الكل') {
+            const container = document.getElementById('products-container');
+            const products = JSON.parse(localStorage.getItem('bebekds_products')) || [];
+
+            container.innerHTML = '';
+
+            const filteredProducts = category === 'الكل' 
+                ? products 
+                : products.filter(p => p.category === category);
+
+            if (filteredProducts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #718093; padding: 40px 0;">لا توجد منتجات مضافة في هذا القسم حالياً.</p>';
+                return;
+            }
+
+            filteredProducts.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card';
-                card.innerHTML = `<img src="${product.image}" alt="${product.name}" class="product-img"><div class="product-info"><span class="product-category">${product.category}</span><h3 class="product-title">${product.name}</h3><div class="product-price">${product.price} د.ج</div><div class="sizes-label">اختر المقاس:</div><div class="sizes">${product.sizes.map(size => `<button class="size-btn ${selectedSizes[product.id] === size ? 'selected' : ''}" onclick="selectSize(${product.id}, '${size}')">${size}</button>`).join('')}</div><button class="add-to-cart" onclick="addToCart(${product.id})">أضف إلى السلة</button></div>`;
-                grid.appendChild(card);
+                card.innerHTML = `
+                    <img src="${product.image}" class="product-img" alt="${product.name}">
+                    <div class="product-info">
+                        <span class="product-cat">${product.category}</span>
+                        <h3 class="product-name">${product.name}</h3>
+                        <div class="product-price">${product.price} د.ج</div>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
-        function filterProducts(category, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+
+        function filterCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderProducts(category);
+            loadProducts(category);
         }
-        function selectSize(productId, size) {
-            selectedSizes[productId] = size;
-            const activeCategory = document.querySelector('.filter-btn.active').textContent;
-            const catMap = { 'الكل': 'all', 'أولاد': 'أولاد', 'بنات': 'بنات', 'رضع': 'رضع' };
-            renderProducts(catMap[activeCategory]);
-        }
-        function addToCart(productId) {
-            const product = products.find(p => p.id === productId);
-            const size = selectedSizes[productId];
-            const existingIndex = cart.findIndex(item => item.id === productId && item.size === size);
-            if (existingIndex > -1) cart[existingIndex].qty += 1;
-            else cart.push({ ...product, size, qty: 1 });
-            updateCartUI();
-            showToast("تمت إضافة القطعة إلى السلة بنجاح");
-        }
-        function updateQty(index, delta) {
-            cart[index].qty += delta;
-            if (cart[index].qty <= 0) cart.splice(index, 1);
-            updateCartUI();
-        }
-        function updateCartUI() {
-            const cartItemsEl = document.getElementById('cart-items'), countEl = document.getElementById('cart-count'), subtotalEl = document.getElementById('cart-subtotal'), checkoutBtn = document.getElementById('open-checkout-btn');
-            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0), subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            countEl.textContent = totalQty;
-            subtotalEl.textContent = `${subtotal} د.ج`;
-            checkoutBtn.disabled = cart.length === 0;
-            if (cart.length === 0) { cartItemsEl.innerHTML = '<p style="text-align:center; color:#747d8c; margin-top:40px;">السلة فارغة حالياً</p>'; return; }
-            cartItemsEl.innerHTML = cart.map((item, idx) => `<div class="cart-item"><img src="${item.image}" alt="${item.name}"><div class="cart-item-details"><div class="cart-item-title">${item.name}</div><div class="cart-item-meta">المقاس: ${item.size} | ${item.price} د.ج</div><div class="qty-controls"><button class="qty-btn" onclick="updateQty(${idx}, -1)">-</button><span>${item.qty}</span><button class="qty-btn" onclick="updateQty(${idx}, 1)">+</button></div></div></div>`).join('');
-        }
-        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('open'); }
-        function openCheckout() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('checkout-modal').classList.add('open'); document.getElementById('overlay').classList.add('open'); updateCheckoutSummary(); }
-        function closeAll() { document.getElementById('cart-sidebar').classList.remove('open'); document.getElementById('checkout-modal').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
-        function getShippingCost(wilaya) {
-            if (!wilaya) return 0;
-            const southCodes = ["01", "08", "11", "30", "32", "33", "37", "45", "47", "49", "50", "52", "53", "54", "55", "56", "57", "58"];
-            const code = wilaya.split(" - ")[0];
-            if (code === "16") return 400;
-            if (southCodes.includes(code)) return 900;
-            return 600;
-        }
-        function updateCheckoutSummary() {
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0), wilaya = document.getElementById('cust-wilaya').value, shipping = getShippingCost(wilaya);
-            document.getElementById('summary-subtotal').textContent = `${subtotal} د.ج`;
-            document.getElementById('summary-shipping').textContent = wilaya ? `${shipping} د.ج` : 'حدد الولاية';
-            document.getElementById('summary-total').textContent = `${subtotal + shipping} د.ج`;
-        }
-        function submitOrder(e) {
-            e.preventDefault();
-            const name = document.getElementById('cust-name').value, wilaya = document.getElementById('cust-wilaya').value, orderRef = Math.floor(100000 + Math.random() * 900000);
-            alert(`شكراً لك ${name}!\nتم استلام طلبك بنجاح (رقم الطلب: #${orderRef}).\nسيتم التواصل معك قريباً لتأكيد التوصيل إلى ولاية ${wilaya}.`);
-            cart = []; updateCartUI(); document.getElementById('order-form').reset(); closeAll();
-        }
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg; toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 2500);
-        }
-        initWilayas(); renderProducts();
+
+        loadProducts();
     </script>
 </body>
 </html>
-
